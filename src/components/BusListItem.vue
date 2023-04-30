@@ -28,7 +28,7 @@ export default {
     border-radius: 8px;
     padding: 8px;
     background-color: gray;
-    margin: 8px 12px;
+    margin: 1vh 0;
 }
 
 .space-between {

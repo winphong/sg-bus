@@ -1,7 +1,4 @@
 <script lang="ts">
-import BusListItem from '@/components/BusListItem.vue'
-import type { IBusStop } from '@/model'
-
 interface GMapPosition {
     lat: number,
     lng: number
