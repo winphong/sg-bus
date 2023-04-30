@@ -1,9 +1,10 @@
 <script lang="ts">
 import BusListItem from '@/components/BusListItem.vue'
-import type { IBusStop, ILocation } from '@/model'
+import GoogleMap from '@/components/GoogleMap.vue'
+import type { IBusStop } from '@/model'
 
 export default {
-  components: { BusListItem },
+  components: { BusListItem, GoogleMap },
   data() {
     return {
       nearbyBusStops: [] as IBusStop[]
@@ -27,18 +28,7 @@ export default {
 
 <template>
   <main>
-
-    <!-- <GMapMap :center="center" :zoom="15" style="width: 90vw; height: 60vh" :options="{
-        zoomControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        rotateControl: false,
-        fullscreenControl: false,
-        clickableIcons: false,
-      }">
-      <GMapMarker :key="index" v-for="(m, index) in markers" :position="m.position" />
-    </GMapMap> -->
+    <!-- <google-map :center="center" :markers="markers"></google-map> -->
     <div v-for="busStop in nearbyBusStops" :key="busStop.code">
       <bus-list-item :bus-stop="busStop"></bus-list-item>
     </div>

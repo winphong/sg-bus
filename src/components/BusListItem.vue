@@ -13,14 +13,25 @@ export default {
 
 
 <template>
-    <div>
+    <div class="container">
         <div>{{ busStop.description }}</div>
-        <div class="center-row-flex">
-            <div>{{ busStop.code }}</div>
-            <div>{{ busStop.roadName }}</div>
+        <div :class="{ 'center-row-flex': true, 'space-between': true }">
+            <span>{{ busStop.code }}, {{ busStop.roadName }}</span>
+            <div>~{{ busStop.distance.toFixed(2) }}km</div>
+
         </div>
-        <div>{{ busStop.distance }}</div>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+    border-radius: 8px;
+    padding: 8px;
+    background-color: gray;
+    margin: 8px 12px;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+</style>
