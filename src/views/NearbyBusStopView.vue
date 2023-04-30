@@ -1,21 +1,21 @@
 <script lang="ts">
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 
 import BusListItem from '@/components/BusListItem.vue'
 import GoogleMap from '@/components/GoogleMap.vue'
-import type { IBusStop } from '@/model'
 
 export default {
   components: { BusListItem, GoogleMap },
   data() {
     return {
-      nearbyBusStops: [] as IBusStop[],
       currentPosition: { lat: null, lng: null } as { lat: number | null, lng: number | null }
     }
   },
   async mounted() {
     navigator.geolocation.getCurrentPosition((e) => {
-      this.currentPosition = { lat: e.coords.latitude, lng: e.coords.longitude }
+      const position = { lat: e.coords.latitude, lng: e.coords.longitude }
+      this.currentPosition = position
     }, (e) => console.log('failure', e));
   },
   watch: {
@@ -24,14 +24,23 @@ export default {
       if (lat === null || lng === null) {
         return
       }
-      // TODO: Handle if user is offline
+
+      const position = this.$store.getters.getCurrentPosition
+      if (position.lat && position.lng) {
+        console.log("Same position")
+        return
+      }
+
       const busStops = (await this.$axios.get(`/nearby-bus-stops?lat=${lat}&lng=${lng}`)).data.data
-      this.nearbyBusStops = busStops
+
+      this.$store.commit('setNearbyBusStops', { busStops })
+      this.$store.commit('setCurrentPosition', { position: this.currentPosition })
     }
   },
   computed: {
+    ...mapGetters(['getNearbyBusStops']),
     markers() {
-      return _.map(this.nearbyBusStops, (busStop) => {
+      return _.map(this.getNearbyBusStops, (busStop) => {
         return { position: { lat: busStop.location.latitude, lng: busStop.location.longitude } }
       }).slice(0, 10)
     },
@@ -48,7 +57,7 @@ export default {
 <template>
   <div>
     <!-- <google-map :center="center" :markers="markers"></google-map> -->
-    <div v-for="busStop in nearbyBusStops" :key="busStop.code">
+    <div v-for="busStop in getNearbyBusStops" :key="busStop.code">
       <bus-list-item :bus-stop="busStop"></bus-list-item>
     </div>
   </div>
