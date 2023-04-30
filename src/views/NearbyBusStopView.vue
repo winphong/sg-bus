@@ -24,7 +24,8 @@ export default {
       if (lat === null || lng === null) {
         return
       }
-      const busStops = (await this.$axios.get(`?lat=${lat}&lng=${lng}`)).data.services.data
+      // TODO: Handle if user is offline
+      const busStops = (await this.$axios.get(`/nearby-bus-stops?lat=${lat}&lng=${lng}`)).data.data
       this.nearbyBusStops = busStops
     }
   },
@@ -45,7 +46,7 @@ export default {
 </script>
 
 <template>
-  <div class="nearby-bus-container">
+  <div>
     <!-- <google-map :center="center" :markers="markers"></google-map> -->
     <div v-for="busStop in nearbyBusStops" :key="busStop.code">
       <bus-list-item :bus-stop="busStop"></bus-list-item>
@@ -54,8 +55,4 @@ export default {
 </template>
 
 
-<style scoped>
-.nearby-bus-container {
-  margin: 0 4vw;
-}
-</style>
+<style scoped></style>
