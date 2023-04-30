@@ -10,5 +10,10 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  optimizeDeps: {
+    // fast-deep-equal doesnt have default export
+    // https://github.com/vitejs/vite/issues/2679
+    include: ['fast-deep-equal']
   }
 })
