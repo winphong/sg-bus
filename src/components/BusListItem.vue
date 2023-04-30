@@ -7,20 +7,19 @@ export default {
     props: {
         busStop: { type: Object as () => IBusStop, required: true }
     },
-
 }
 </script>
 
-
 <template>
-    <div class="container">
-        <div>{{ busStop.description }}</div>
-        <div :class="{ 'center-row-flex': true, 'space-between': true }">
-            <span>{{ busStop.code }}, {{ busStop.roadName }}</span>
-            <div>~{{ busStop.distance.toFixed(2) }}km</div>
-
+    <router-link :to="{ name: 'timing', params: { busStopId: busStop.code } }">
+        <div class="container">
+            <div>{{ busStop.description }}</div>
+            <div :class="{ 'center-row-flex': true, 'space-between': true }">
+                <span>{{ busStop.code }}, {{ busStop.roadName }}</span>
+                <div>~{{ busStop.distance.toFixed(2) }}km</div>
+            </div>
         </div>
-    </div>
+    </router-link>
 </template>
 
 <style scoped>

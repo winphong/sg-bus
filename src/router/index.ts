@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import NearbyBusStop from '../views/NearbyBusStopView.vue'
+import NearbyBusStop from '@/views/NearbyBusStopView.vue'
+import BusTiming from '@/views/BusTimingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: NearbyBusStop,
+    },
+    {
+      path: '/timing/:busStopId',
+      name: 'timing',
+      component: BusTiming,
     },
     {
       path: '/about',
