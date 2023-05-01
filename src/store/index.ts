@@ -61,33 +61,48 @@ const store = createStore<IStore>({
       return tree
     },
     getNearbyBusStops(state, getters) {
-      if (state.lat === null || state.lng === null) {
-        return []
+      const cachedPosition = localStorage.getItem('position')
+      let position: { lat: number | null; lng: number | null }
+
+      if (state.lng === null || state.lat === null) {
+        if (!cachedPosition) {
+          return []
+        }
+      }
+
+      if (cachedPosition) {
+        position = JSON.parse(cachedPosition)
+      } else {
+        position = {
+          lat: state.lat!,
+          lng: state.lng!,
+        }
       }
 
       const delta = 0.008
-
       const bbox = {
-        maxX: state.lat + delta,
-        maxY: state.lng + delta,
-        minX: state.lat - delta,
-        minY: state.lng - delta,
+        maxX: position.lat! + delta,
+        maxY: position.lng! + delta,
+        minX: position.lat! - delta,
+        minY: position.lng! - delta,
       }
-      const matchingBusStops = getters.getRbush.search(bbox)
 
+      const matchingBusStops = getters.getRbush.search(bbox)
       const calculator = new GeoDistanceCalculator()
       const matchingBusStopsWDistance = matchingBusStops.map((v) => {
         const busStop = getters.getBusStops[v.id]
         return {
           ...busStop,
           distance: calculator.getDistance({
-            srcLat: state.lat!,
-            srcLng: state.lng!,
+            srcLat: position.lat!,
+            srcLng: position.lng!,
             destLat: busStop.Latitude,
             destLng: busStop.Longitude,
           }),
         }
       })
+
+      console.log('matchingBusStopsWDistance', matchingBusStopsWDistance)
 
       return _.orderBy(matchingBusStopsWDistance, 'distance', 'asc')
     },

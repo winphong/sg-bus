@@ -42,14 +42,14 @@ export default {
 </script>
 
 <template>
-    <base-card class="card-in" v-if="!!arrival.time">
-        <div :class="['center-row-flex', 'full-width']">
-            <div :class="['center-column-flex', 'full-width']">
+    <base-card :class="['card-in']" v-if="!!arrival.time">
+        <div :class="['center-row-flex', 'full-width', 'justify']">
+            <div :class="['center-column-flex']">
                 <span class="arrival-time-text">{{ arrivalTime(arrival.duration_ms) }}</span>
                 <span class="min-text" v-if="arrivalTime(arrival.duration_ms) !== 'Arr'">min</span>
             </div>
-
-            <div :class="['center-column-flex', 'full-width']">
+            <div :style="{ margin: '4px' }"></div>
+            <div :class="['center-column-flex']">
                 <v-icon color="grey" size="20" v-if="arrival.type === 'DD'" :icon="mdiBusDoubleDecker"></v-icon>
                 <v-icon color="grey" size="20" v-else :icon="mdiBus"></v-icon>
                 <div class="bar" :style="{ 'background-color': crowd(arrival.load) }"></div>
@@ -62,14 +62,12 @@ export default {
 <style scoped>
 .card-in {
     min-width: 50px;
-    padding: 12% 6%;
-    margin: 10%;
-    background-color: beige
+    padding: 1.2rem 0;
 }
 
 .arrival-time-text {
     text-align: center;
-    font-size: 18px;
+    font-size: 0.9rem;
     line-height: 14px;
     width: 100%;
 }

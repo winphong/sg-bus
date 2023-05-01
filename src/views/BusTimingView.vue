@@ -39,11 +39,14 @@ export default {
 <template>
     <pull-refresh class="pull-container " v-model="loading" @refresh="onRefresh" pulling-text="Pull down to refresh"
         loading-text="Loading..." loosing-text="Release to refresh" success-text="" pull-distance="40">
-        <div>
-            <div>{{ busStop.Description }} ({{ busStop.BusStopCode }})</div>
-        </div>
-        <div v-for="arrival in arrivals" :key="arrival.service_num">
-            <bus-arrival-list-item :bus-arrival="arrival"></bus-arrival-list-item>
+        <div class="page-container">
+            <div class="center-column-flex">
+                <span class="title">{{ busStop.Description }} ({{ busStop.BusStopCode }})</span>
+                <span class="subtitle">{{ busStop.RoadName }}</span>
+            </div>
+            <div v-for="arrival in arrivals" :key="arrival.service_num">
+                <bus-arrival-list-item :bus-arrival="arrival"></bus-arrival-list-item>
+            </div>
         </div>
     </pull-refresh>
 </template>
@@ -51,6 +54,23 @@ export default {
 <style scoped>
 .pull-container {
     height: 90vh;
+}
+
+.page-container {
+    padding: 0 2vw;
+}
+
+.title {
+    font-size: 1.3rem;
+    text-align: center;
+    line-height: 1.3rem;
+}
+
+.subtitle {
+    font-style: italic;
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 1rem;
 }
 </style>
   

@@ -11,21 +11,30 @@ export default {
     props: {
         busArrival: { type: Object as () => IBusArrival, required: true }
     },
+    computed: {
+        origin() {
+            return this.$store.getters.getSelectedBusStop(this.busArrival.OriginCode).Description
+        },
+        destination() {
+            return this.$store.getters.getSelectedBusStop(this.busArrival.DestinationCode).Description
+        },
+
+    }
 }
 </script>
 
 <template>
     <base-card class="arrival-bus-card">
         <div class="center-row-flex">
-
             <div class="flex-1">
-                <span>{{ busArrival.service_num }} - {{ busArrival.operator }} - </span>
-                <v-timeline side="end" truncate-line="both">
-                    <v-timeline-item size="x-small" hide-opposite>
-                        <span>{{ busArrival.next.sad.DestinationCode }}</span>
+                <span>{{ busArrival.service_num }} ({{ busArrival.operator }}) </span>
+                <!-- Refactor to reusable component -->
+                <v-timeline side="end" truncate-line="both" class="ma-0 pa-0" density="compact">
+                    <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="green">
+                        <span class="location">{{ origin }}</span>
                     </v-timeline-item>
-                    <v-timeline-item size="x-small" hide-opposite>
-                        <span>{{ busArrival.next.sad.OriginCode }}</span>
+                    <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="red">
+                        <span class="location">{{ destination }}</span>
                     </v-timeline-item>
                 </v-timeline>
             </div>
@@ -42,50 +51,36 @@ export default {
 
 <style scoped>
 .flex-1 {
-    flex: 1;
-    padding: 1.2rem
+    flex: 1.5;
 }
 
 .flex-2 {
     flex: 2;
-    padding: 0.3rem
 }
 
 .timing-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 0.5rem;
 }
 
 .arrival-bus-card {
     margin: 10px 0;
+    padding: 1rem 0.8rem;
+}
+
+.location {
+    font-size: 12px;
 }
 
 .v-timeline--vertical.v-timeline {
     grid-row-gap: 6px;
     grid-column-gap: 0px;
     grid-template-columns: 0 min-content auto;
-    padding-inline-start: 0px;
-
 }
 
-
-div.v-timeline--vertical.v-timeline--truncate-line-start .v-timeline-item:first-child .v-timeline-item__body {
-    padding-inline-start: 0px;
-    color: red
-}
-
-.v-timeline--vertical.v-timeline.v-timeline--side-end .v-timeline-item .v-timeline-item__opposite {
-    padding-inline-start: 0px;
+.v-timeline> :first-child>:first-child,
+.v-timeline> :nth-child(2)>:first-child {
+    padding-inline-start: 8px !important;
 }
 </style>
-
-
-
-
-<!-- .xx:first-child {
-    /* color: pink;
-    padding-inline-start: 2px !important;
-    writing-mode: horizontal-tb;
-    direction: rtl; */
-}
- -->
