@@ -49,11 +49,11 @@ export default {
                 <span class="min-text" v-if="arrivalTime(arrival.duration_ms) !== 'Arr'">min</span>
             </div>
 
-            <div :class="['center-column-flex']">
-                <v-icon color="grey" size="18" v-if="arrival.type === 'DD'" :icon="mdiBusDoubleDecker"></v-icon>
-                <v-icon color="grey" size="18" v-else :icon="mdiBus"></v-icon>
+            <div :class="['center-column-flex', 'full-width']">
+                <v-icon color="grey" size="20" v-if="arrival.type === 'DD'" :icon="mdiBusDoubleDecker"></v-icon>
+                <v-icon color="grey" size="20" v-else :icon="mdiBus"></v-icon>
                 <div class="bar" :style="{ 'background-color': crowd(arrival.load) }"></div>
-                <v-icon color="grey" size="12" v-if="arrival.feature === 'WAB'" :icon="mdiWheelchair"></v-icon>
+                <v-icon color="grey" size="16" v-if="arrival.feature === 'WAB'" :icon="mdiWheelchair"></v-icon>
             </div>
         </div>
     </base-card>
@@ -69,7 +69,7 @@ export default {
 
 .arrival-time-text {
     text-align: center;
-    font-size: 12px;
+    font-size: 18px;
     line-height: 14px;
     width: 100%;
 }
@@ -79,11 +79,8 @@ export default {
     line-height: 8px;
 }
 
-
-
 .bar {
-    margin-top: 2px;
-    margin-bottom: 4px;
+    margin: 4px 0px;
     height: 2px;
     width: 100%;
 }

@@ -9,14 +9,24 @@ export default {
   components: { BusListItem, GoogleMap },
   data() {
     return {
-      currentPosition: { lat: null, lng: null } as { lat: number | null, lng: number | null }
+      currentPosition: { lat: null, lng: null } as { lat: number | null, lng: number | null },
+      isLoading: true
     }
   },
   async mounted() {
+    const position = localStorage.getItem(
+      'position',
+    )
+    if (position) {
+      this.currentPosition = JSON.parse(position)
+    }
+
     navigator.geolocation.getCurrentPosition((e) => {
       const position = { lat: e.coords.latitude, lng: e.coords.longitude }
       this.currentPosition = position
-    }, (e) => console.log('failure', e));
+      this.isLoading = false
+    }, (e) => console.log('failure', e), { maximumAge: 10000, enableHighAccuracy: false });
+
   },
   watch: {
     async currentPosition() {
@@ -53,6 +63,9 @@ export default {
 
 <template>
   <div>
+    <div class="circular-progreess-container">
+      <v-progress-circular v-if="isLoading" indeterminate color="primary" size="40"></v-progress-circular>
+    </div>
     <!-- <google-map :center="center" :markers="markers"></google-map> -->
     <div v-for="busStop in getNearbyBusStops" :key="busStop.code">
       <bus-list-item :bus-stop="busStop"></bus-list-item>
@@ -61,4 +74,12 @@ export default {
 </template>
 
 
-<style scoped></style>
+<style scoped>
+.circular-progreess-container {
+  position: absolute;
+  top: 3vh;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 10;
+}
+</style>

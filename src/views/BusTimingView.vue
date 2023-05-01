@@ -38,7 +38,7 @@ export default {
 
 <template>
     <pull-refresh class="pull-container " v-model="loading" @refresh="onRefresh" pulling-text="Pull down to refresh"
-        loading-text="Loading..." loosing-text="Release to refresh" success-text="">
+        loading-text="Loading..." loosing-text="Release to refresh" success-text="" pull-distance="40">
         <div>
             <div>{{ busStop.Description }} ({{ busStop.BusStopCode }})</div>
         </div>

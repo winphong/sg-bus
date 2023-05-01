@@ -17,8 +17,17 @@ export default {
 <template>
     <base-card class="arrival-bus-card">
         <div class="center-row-flex">
+
             <div class="flex-1">
                 <span>{{ busArrival.service_num }} - {{ busArrival.operator }} - </span>
+                <v-timeline side="end" truncate-line="both">
+                    <v-timeline-item size="x-small" hide-opposite>
+                        <span>{{ busArrival.next.sad.DestinationCode }}</span>
+                    </v-timeline-item>
+                    <v-timeline-item size="x-small" hide-opposite>
+                        <span>{{ busArrival.next.sad.OriginCode }}</span>
+                    </v-timeline-item>
+                </v-timeline>
             </div>
             <div class="flex-2">
                 <div class="timing-grid">
@@ -50,4 +59,33 @@ export default {
 .arrival-bus-card {
     margin: 10px 0;
 }
+
+.v-timeline--vertical.v-timeline {
+    grid-row-gap: 6px;
+    grid-column-gap: 0px;
+    grid-template-columns: 0 min-content auto;
+    padding-inline-start: 0px;
+
+}
+
+
+div.v-timeline--vertical.v-timeline--truncate-line-start .v-timeline-item:first-child .v-timeline-item__body {
+    padding-inline-start: 0px;
+    color: red
+}
+
+.v-timeline--vertical.v-timeline.v-timeline--side-end .v-timeline-item .v-timeline-item__opposite {
+    padding-inline-start: 0px;
+}
 </style>
+
+
+
+
+<!-- .xx:first-child {
+    /* color: pink;
+    padding-inline-start: 2px !important;
+    writing-mode: horizontal-tb;
+    direction: rtl; */
+}
+ -->
