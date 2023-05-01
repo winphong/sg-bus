@@ -1,8 +1,8 @@
 import type { IBusStop } from '@/model'
 
 export interface IStore {
-  selectedBusStop: IBusStop | null
-  nearbyBusStops: IBusStop[]
+  selectedBusStopCode: string | null
+  nearbyBusStops: Map<string, IBusStop>
   lat: number | null
   lng: number | null
 }

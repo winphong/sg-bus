@@ -28,25 +28,22 @@ export default {
       const position = this.$store.getters.getCurrentPosition
       if (position.lat && position.lng) {
         console.log("Same position")
-        return
       }
 
-      const busStops = (await this.$axios.get(`/nearby-bus-stops?lat=${lat}&lng=${lng}`)).data.data
-
-      this.$store.commit('setNearbyBusStops', { busStops })
       this.$store.commit('setCurrentPosition', { position: this.currentPosition })
     }
   },
   computed: {
-    ...mapGetters(['getNearbyBusStops']),
+    ...mapGetters(['getNearbyBusStops', 'getCurrentPosition']),
     markers() {
       return _.map(this.getNearbyBusStops, (busStop) => {
-        return { position: { lat: busStop.location.latitude, lng: busStop.location.longitude } }
+        return { position: { lat: busStop.Latitude, lng: busStop.Longitude } }
       }).slice(0, 10)
     },
     center() {
-      if (this.currentPosition.lat !== null && this.currentPosition.lng !== null) {
-        return this.currentPosition
+      const position = this.getCurrentPosition
+      if (position?.lat !== null && position?.lng !== null) {
+        return position
       }
       return this.markers[0]?.position ?? { lat: 0, lng: 0 }
     }
