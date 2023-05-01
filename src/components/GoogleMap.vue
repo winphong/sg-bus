@@ -16,6 +16,11 @@ export default {
             required: true
         }
     },
+    methods: {
+        handleMarker(e: any) {
+            this.$store.commit('setCurrentPosition', { position: { lat: e.latLng.lat(), lng: e.latLng.lng() } })
+        }
+    }
 }
 </script>
 
@@ -29,7 +34,7 @@ export default {
             fullscreenControl: false,
             clickableIcons: false
         }">
-        <GMapMarker :key="index" v-for="(m, index) in markers" :position="m.position" />
+        <GMapMarker :key="index" v-for="(m, index) in markers" :position="m.position" @click="handleMarker" />
     </GMapMap>
 </template>
 
