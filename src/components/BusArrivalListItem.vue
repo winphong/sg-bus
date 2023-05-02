@@ -25,7 +25,7 @@ export default {
 
 <template>
     <base-card class="arrival-bus-card">
-        <div class="center-row-flex">
+        <div :class="['center-row-flex', 'min-height']">
             <div class="flex-1">
                 <span>{{ busArrival.service_num }} ({{ busArrival.operator }}) </span>
                 <!-- Refactor to reusable component -->
@@ -51,7 +51,12 @@ export default {
 
 <style scoped>
 .flex-1 {
+    padding-right: 8px;
     flex: 1.5;
+}
+
+.min-height {
+    min-height: 10vh
 }
 
 .flex-2 {
@@ -70,7 +75,7 @@ export default {
 }
 
 .location {
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .v-timeline--vertical.v-timeline {

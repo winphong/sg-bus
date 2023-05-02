@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import TheNavigator from '@/components/TheNavigator.vue'
 </script>
 
 <script lang="ts">
 export default {
+  components: {
+    TheNavigator
+  },
   beforeCreate() {
     navigator.geolocation.getCurrentPosition((e) => {
       const position = { lat: e.coords.latitude, lng: e.coords.longitude }
@@ -15,14 +19,11 @@ export default {
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-    </nav>
-  </header>
-
-  <RouterView />
+  <div :style="{ marginTop: '6vh' }"></div>
+  <the-navigator> </the-navigator>
+  <main>
+    <router-view> </router-view>
+  </main>
 </template>
 
 <style scoped>

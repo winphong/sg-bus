@@ -2,8 +2,12 @@
 
 <script lang="ts">
 import type { IBusStopDistance } from '@/model';
+import BaseCard from './BaseCard.vue';
 
 export default {
+    components: {
+        BaseCard
+    },
     props: {
         busStop: { type: Object as () => IBusStopDistance, required: true }
     },
@@ -12,25 +16,21 @@ export default {
 
 <template>
     <router-link :to="{ name: 'timing', params: { busStopId: busStop.BusStopCode } }">
-        <div class="container">
-            <div>{{ busStop.Description }}</div>
-            <div :class="{ 'center-row-flex': true, 'space-between': true }">
-                <span>{{ busStop.BusStopCode }}, {{ busStop.RoadName }}</span>
-                <div>~{{ busStop.distance.toFixed(2) }}km</div>
+        <base-card>
+            <div class="container">
+                <span>{{ busStop.Description }}</span>
+                <div :class="['center-row-flex', 'between']">
+                    <span>{{ busStop.BusStopCode }}, {{ busStop.RoadName }}</span>
+                    <span>~{{ busStop.distance.toFixed(2) }}km</span>
+                </div>
             </div>
-        </div>
+        </base-card>
     </router-link>
 </template>
 
 <style scoped>
 .container {
-    border-radius: 8px;
-    padding: 8px;
-    background-color: gray;
-    margin: 1vh 0;
-}
-
-.space-between {
-    justify-content: space-between;
+    padding: 12px;
+    margin: 12px 0;
 }
 </style>
