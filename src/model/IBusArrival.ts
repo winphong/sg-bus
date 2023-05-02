@@ -6,7 +6,7 @@ export interface IBusArrival {
   next3: IBusNextArrival
 }
 
-interface IBusNextArrival {
+export interface IBusNextArrival {
   duration_ms: number
   feature: string
   lat: number | null

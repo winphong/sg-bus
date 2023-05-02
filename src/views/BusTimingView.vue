@@ -1,8 +1,10 @@
 
 <script lang="ts">
 import type { IBusArrival } from '@/model';
+import BusArrival from '@/components/BusArrival.vue';
 
 export default {
+    components: { BusArrival },
     data() {
         return { arrivals: [] as IBusArrival[] }
     },
@@ -20,14 +22,11 @@ export default {
 </script>
 
 <template>
-    <span v-if="!!busStop">{{ busStop.Description }} ({{ busStop.BusStopCode }})</span>
-
+    <div>
+        <div>{{ busStop.Description }} ({{ busStop.BusStopCode }})</div>
+    </div>
     <div v-for="arrival in arrivals" :key="arrival.service_num">
-        <span>{{ arrival.service_num }} - {{ arrival.operator }} - </span>
-        <span>{{ Math.ceil(arrival.next.duration_ms / 1000 / 60) }}, </span>
-        <span>{{ Math.ceil(arrival.next2.duration_ms / 1000 / 60) }}, </span>
-        <span>{{ Math.ceil(arrival.next3.duration_ms / 1000 / 60) }} </span>
-
+        <bus-arrival :bus-arrival="arrival"></bus-arrival>
     </div>
 </template>
   
