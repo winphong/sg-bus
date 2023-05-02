@@ -1,6 +1,5 @@
 <script lang="ts">
 import _ from 'lodash'
-import { mapGetters } from 'vuex'
 
 import BusListItem from '@/components/BusListItem.vue'
 import GoogleMap from '@/components/GoogleMap.vue'
@@ -9,32 +8,17 @@ export default {
   components: { BusListItem, GoogleMap },
   data() {
     return {
-      currentPosition: { lat: null, lng: null } as { lat: number | null, lng: number | null }
-    }
-  },
-  async mounted() {
-    navigator.geolocation.getCurrentPosition((e) => {
-      const position = { lat: e.coords.latitude, lng: e.coords.longitude }
-      this.currentPosition = position
-    }, (e) => console.log('failure', e));
-  },
-  watch: {
-    async currentPosition() {
-      const { lat, lng } = this.currentPosition
-      if (lat === null || lng === null) {
-        return
-      }
-
-      const position = this.$store.getters.getCurrentPosition
-      if (position.lat && position.lng) {
-        console.log("Same position")
-      }
-
-      this.$store.commit('setCurrentPosition', { position: this.currentPosition })
+      currentPosition: { lat: null, lng: null } as { lat: number | null, lng: number | null },
+      // isLoading: true
     }
   },
   computed: {
-    ...mapGetters(['getNearbyBusStops', 'getCurrentPosition']),
+    getNearbyBusStops() {
+      return this.$store.getters.getNearbyBusStops
+    },
+    getCurrentPosition() {
+      return this.$store.getters.getCurrentPosition
+    },
     markers() {
       return _.map(this.getNearbyBusStops, (busStop) => {
         return { position: { lat: busStop.Latitude, lng: busStop.Longitude } }
@@ -53,12 +37,23 @@ export default {
 
 <template>
   <div>
+    <!-- <div class="circular-progreess-container">
+      <v-progress-circular v-if="isLoading" indeterminate color="primary" size="40"></v-progress-circular>
+    </div> -->
     <!-- <google-map :center="center" :markers="markers"></google-map> -->
-    <div v-for="busStop in getNearbyBusStops" :key="busStop.code">
+    <div v-for="busStop in getNearbyBusStops" :key="busStop.BusStopCode">
       <bus-list-item :bus-stop="busStop"></bus-list-item>
     </div>
   </div>
 </template>
 
 
-<style scoped></style>
+<style scoped>
+.circular-progreess-container {
+  position: absolute;
+  top: 3vh;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 10;
+}
+</style>

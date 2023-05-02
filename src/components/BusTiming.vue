@@ -42,18 +42,18 @@ export default {
 </script>
 
 <template>
-    <base-card class="card-in" v-if="!!arrival.time">
-        <div :class="['center-row-flex', 'full-width']">
-            <div :class="['center-column-flex', 'full-width']">
+    <base-card :class="['card-in']" v-if="!!arrival.time">
+        <div :class="['center-row-flex', 'full-width', 'justify']">
+            <div :class="['center-column-flex']">
                 <span class="arrival-time-text">{{ arrivalTime(arrival.duration_ms) }}</span>
                 <span class="min-text" v-if="arrivalTime(arrival.duration_ms) !== 'Arr'">min</span>
             </div>
-
+            <div :style="{ margin: '4px' }"></div>
             <div :class="['center-column-flex']">
-                <v-icon color="grey" size="18" v-if="arrival.type === 'DD'" :icon="mdiBusDoubleDecker"></v-icon>
-                <v-icon color="grey" size="18" v-else :icon="mdiBus"></v-icon>
+                <v-icon color="grey" size="20" v-if="arrival.type === 'DD'" :icon="mdiBusDoubleDecker"></v-icon>
+                <v-icon color="grey" size="20" v-else :icon="mdiBus"></v-icon>
                 <div class="bar" :style="{ 'background-color': crowd(arrival.load) }"></div>
-                <v-icon color="grey" size="12" v-if="arrival.feature === 'WAB'" :icon="mdiWheelchair"></v-icon>
+                <v-icon color="grey" size="16" v-if="arrival.feature === 'WAB'" :icon="mdiWheelchair"></v-icon>
             </div>
         </div>
     </base-card>
@@ -62,14 +62,12 @@ export default {
 <style scoped>
 .card-in {
     min-width: 50px;
-    padding: 12% 6%;
-    margin: 10%;
-    background-color: beige
+    padding: 1.2rem 0;
 }
 
 .arrival-time-text {
     text-align: center;
-    font-size: 12px;
+    font-size: 0.9rem;
     line-height: 14px;
     width: 100%;
 }
@@ -79,11 +77,8 @@ export default {
     line-height: 8px;
 }
 
-
-
 .bar {
-    margin-top: 2px;
-    margin-bottom: 4px;
+    margin: 4px 0px;
     height: 2px;
     width: 100%;
 }

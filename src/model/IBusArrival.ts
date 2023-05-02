@@ -4,6 +4,8 @@ export interface IBusArrival {
   next: IBusNextArrival
   next2: IBusNextArrival
   next3: IBusNextArrival
+  OriginCode: string
+  DestinationCode: string
 }
 
 export interface IBusNextArrival {

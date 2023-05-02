@@ -11,6 +11,15 @@ export default {
     props: {
         busArrival: { type: Object as () => IBusArrival, required: true }
     },
+    computed: {
+        origin() {
+            return this.$store.getters.getSelectedBusStop(this.busArrival.OriginCode).Description
+        },
+        destination() {
+            return this.$store.getters.getSelectedBusStop(this.busArrival.DestinationCode).Description
+        },
+
+    }
 }
 </script>
 
@@ -18,7 +27,16 @@ export default {
     <base-card class="arrival-bus-card">
         <div class="center-row-flex">
             <div class="flex-1">
-                <span>{{ busArrival.service_num }} - {{ busArrival.operator }} - </span>
+                <span>{{ busArrival.service_num }} ({{ busArrival.operator }}) </span>
+                <!-- Refactor to reusable component -->
+                <v-timeline side="end" truncate-line="both" class="ma-0 pa-0" density="compact">
+                    <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="green">
+                        <span class="location">{{ origin }}</span>
+                    </v-timeline-item>
+                    <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="red">
+                        <span class="location">{{ destination }}</span>
+                    </v-timeline-item>
+                </v-timeline>
             </div>
             <div class="flex-2">
                 <div class="timing-grid">
@@ -33,21 +51,36 @@ export default {
 
 <style scoped>
 .flex-1 {
-    flex: 1;
-    padding: 1.2rem
+    flex: 1.5;
 }
 
 .flex-2 {
     flex: 2;
-    padding: 0.3rem
 }
 
 .timing-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 0.5rem;
 }
 
 .arrival-bus-card {
     margin: 10px 0;
+    padding: 1rem 0.8rem;
+}
+
+.location {
+    font-size: 12px;
+}
+
+.v-timeline--vertical.v-timeline {
+    grid-row-gap: 6px;
+    grid-column-gap: 0px;
+    grid-template-columns: 0 min-content auto;
+}
+
+.v-timeline> :first-child>:first-child,
+.v-timeline> :nth-child(2)>:first-child {
+    padding-inline-start: 8px !important;
 }
 </style>

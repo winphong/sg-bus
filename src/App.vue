@@ -2,6 +2,18 @@
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
+<script lang="ts">
+export default {
+  beforeCreate() {
+    navigator.geolocation.getCurrentPosition((e) => {
+      const position = { lat: e.coords.latitude, lng: e.coords.longitude }
+      this.$store.commit('setCurrentPosition', { position })
+    }, (e) => console.log('failure', e), { maximumAge: 10000, enableHighAccuracy: false });
+  },
+}
+
+</script>
+
 <template>
   <header>
     <nav>
