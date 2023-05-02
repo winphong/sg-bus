@@ -17,7 +17,7 @@ export default {
         arrivalTime() {
             return (time: number) => {
                 const minutes = Math.floor(time / 1000 / 60)
-                if (time <= 1) {
+                if (minutes <= 1) {
                     return 'Arr'
                 }
                 return minutes
@@ -69,7 +69,7 @@ export default {
 
 .arrival-time-text {
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 14px;
     width: 100%;
 }
