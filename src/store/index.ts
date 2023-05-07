@@ -20,14 +20,9 @@ const store = createStore<IStore>({
       state.selectedBusStopCode = payload.busStopCode
     },
     setNearbyBusStops(state, payload: { busStops: IBusStop[] }) {
-      state.nearbyBusStops = new Map(
-        payload.busStops.map((v) => [v.BusStopCode, v]),
-      )
+      state.nearbyBusStops = new Map(payload.busStops.map((v) => [v.BusStopCode, v]))
     },
-    setCurrentPosition(
-      state,
-      payload: { position: { lng: number; lat: number } },
-    ) {
+    setCurrentPosition(state, payload: { position: { lng: number; lat: number } }) {
       state.lng = payload.position.lng
       state.lat = payload.position.lat
 
@@ -101,8 +96,6 @@ const store = createStore<IStore>({
           }),
         }
       })
-
-      console.log('matchingBusStopsWDistance', matchingBusStopsWDistance)
 
       return _.orderBy(matchingBusStopsWDistance, 'distance', 'asc')
     },

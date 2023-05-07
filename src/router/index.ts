@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import NearbyBusStop from '@/views/NearbyBusStopView.vue'
+import BusStopList from '@/views/BusStopListView.vue'
 import BusTiming from '@/views/BusTimingView.vue'
 
 const router = createRouter({
@@ -8,7 +8,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: NearbyBusStop,
+      component: BusStopList,
     },
     {
       path: '/timing/:busStopId',
