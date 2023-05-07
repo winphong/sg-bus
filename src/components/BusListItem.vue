@@ -21,7 +21,7 @@ export default {
                 <span>{{ busStop.Description }}</span>
                 <div :class="['center-row-flex', 'between']">
                     <span>{{ busStop.BusStopCode }}, {{ busStop.RoadName }}</span>
-                    <span>~{{ busStop.distance.toFixed(2) }}km</span>
+                    <span v-if="busStop.distance">~{{ busStop.distance.toFixed(2) }}km</span>
                 </div>
             </div>
         </base-card>
