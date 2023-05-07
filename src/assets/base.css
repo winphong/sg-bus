@@ -35,6 +35,8 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  --color-pastel: #fefae6;
+
   --section-gap: 160px;
 }
 
@@ -65,7 +67,7 @@
 body {
   min-height: 100vh;
   color: var(--vt-c-black-soft);
-  background: var(--color-background);
+  background: var(--color-pastel);
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
   font-family: Montserrat, Roboto, sans-serif;

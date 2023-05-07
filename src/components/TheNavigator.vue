@@ -15,8 +15,8 @@ export default {
 <template>
   <v-layout>
     <v-navigation-drawer v-model="drawer" floating location="bottom">
-      <v-list-item title="Bus Arrival" link :to="'/'"> </v-list-item>
-      <v-list-item title="Bus Stops" link :to="'/about'"> </v-list-item>
+      <v-list-item title="Bus Stops" link :to="'/'"> </v-list-item>
+      <v-list-item title="Bus Routes" link :to="'/about'"> </v-list-item>
     </v-navigation-drawer>
   </v-layout>
 

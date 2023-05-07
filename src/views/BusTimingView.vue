@@ -2,11 +2,12 @@
 import type { IBusArrival } from '@/model'
 import BusArrivalListItem from '@/components/BusArrivalListItem.vue'
 import PullRefresh from 'pull-refresh-vue3'
+import { onMounted, onUnmounted } from 'vue'
 
 export default {
   components: { BusArrivalListItem, PullRefresh },
   data() {
-    return { arrivals: [] as IBusArrival[], isLoading: false }
+    return { arrivals: [] as IBusArrival[], isLoading: false, scrollPosition: 0 }
   },
   async mounted() {
     const data = (await this.$axios.get(`/?id=${this.$route.params.busStopId}`)).data
@@ -16,7 +17,11 @@ export default {
     busStop() {
       return this.$store.getters.getSelectedBusStop(this.$route.params.busStopId as string)
     },
+    refreshDisabled() {
+      return this.scrollPosition > 100
+    },
   },
+
   methods: {
     async onRefresh() {
       this.isLoading = true
@@ -26,36 +31,48 @@ export default {
 
       this.isLoading = false
     },
+    handleScroll(event: Event) {
+      const scrollPosition = (event.target as HTMLElement).scrollTop
+      if (scrollPosition > 150) {
+        return
+      }
+      this.scrollPosition = (event.target as HTMLElement).scrollTop
+    },
   },
 }
 </script>
 
 <template>
-  <pull-refresh
-    class="pull-container"
-    v-model="isLoading"
-    @refresh="onRefresh"
-    pulling-text="Pull down to refresh"
-    loading-text="Loading..."
-    loosing-text="Release to refresh"
-    success-text=""
-    pull-distance="40"
-  >
-    <div class="page-container">
-      <div class="center-column-flex">
-        <span class="title">{{ busStop.Description }} ({{ busStop.BusStopCode }})</span>
-        <span class="subtitle">{{ busStop.RoadName }}</span>
+  <div>
+    <pull-refresh
+      class="pull-container"
+      v-model="isLoading"
+      @refresh="onRefresh"
+      pulling-text="Pull down to refresh"
+      loading-text="Loading..."
+      loosing-text="Release to refresh"
+      success-text=""
+      pull-distance="40"
+      @scroll="handleScroll"
+      :disabled="refreshDisabled"
+    >
+      <div class="page-container">
+        <div class="center-column-flex">
+          <span class="title">{{ busStop.Description }} ({{ busStop.BusStopCode }})</span>
+          <span class="subtitle">{{ busStop.RoadName }}</span>
+        </div>
+        <div v-for="arrival in arrivals" :key="arrival.service_num">
+          <bus-arrival-list-item :bus-arrival="arrival"></bus-arrival-list-item>
+        </div>
       </div>
-      <div v-for="arrival in arrivals" :key="arrival.service_num">
-        <bus-arrival-list-item :bus-arrival="arrival"></bus-arrival-list-item>
-      </div>
-    </div>
-  </pull-refresh>
+    </pull-refresh>
+  </div>
 </template>
 
 <style scoped>
 .pull-container {
-  height: 90vh;
+  height: 80vh;
+  overflow-y: scroll;
 }
 
 .page-container {
