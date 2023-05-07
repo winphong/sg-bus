@@ -1,20 +1,27 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import TheNavigator from '@/components/TheNavigator.vue'
+import TheHeader from './components/TheHeader.vue'
 </script>
 
 <script lang="ts">
 export default {
   components: {
     TheNavigator,
+    TheHeader,
   },
   beforeCreate() {
+    this.$store.commit('setIsLoadingPosition', true)
     navigator.geolocation.getCurrentPosition(
       (e) => {
         const position = { lat: e.coords.latitude, lng: e.coords.longitude }
         this.$store.commit('setCurrentPosition', { position })
+        this.$store.commit('setIsLoadingPosition', false)
       },
-      (e) => console.log('failure', e),
+      (e) => {
+        this.$store.commit('setIsLoadingPosition', false)
+        console.log('failure', e)
+      },
       { maximumAge: 10000, enableHighAccuracy: false },
     )
   },
@@ -22,7 +29,7 @@ export default {
 </script>
 
 <template>
-  <div :style="{ marginTop: '6vh' }"></div>
+  <the-header></the-header>
   <the-navigator> </the-navigator>
   <main>
     <router-view> </router-view>

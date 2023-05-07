@@ -1,17 +1,26 @@
 <script lang="ts">
+import PullRefresh from 'pull-refresh-vue3'
+
 import type { IBusArrival } from '@/model'
 import BusArrivalListItem from '@/components/BusArrivalListItem.vue'
-import PullRefresh from 'pull-refresh-vue3'
-import { onMounted, onUnmounted } from 'vue'
+import CircularProgress from '@/components/CircularProgress.vue'
 
 export default {
-  components: { BusArrivalListItem, PullRefresh },
+  components: { BusArrivalListItem, PullRefresh, CircularProgress },
   data() {
-    return { arrivals: [] as IBusArrival[], isLoading: false, scrollPosition: 0 }
+    return {
+      arrivals: [] as IBusArrival[],
+      isRefreshing: false,
+      isLoading: false,
+      scrollPosition: 0,
+    }
   },
   async mounted() {
+    this.isLoading = true
     const data = (await this.$axios.get(`/?id=${this.$route.params.busStopId}`)).data
     this.arrivals = data.Services
+
+    this.isLoading = false
   },
   computed: {
     busStop() {
@@ -24,12 +33,12 @@ export default {
 
   methods: {
     async onRefresh() {
-      this.isLoading = true
+      this.isRefreshing = true
 
       const data = (await this.$axios.get(`/?id=${this.$route.params.busStopId}`)).data
       this.arrivals = data.Services
 
-      this.isLoading = false
+      this.isRefreshing = false
     },
     handleScroll(event: Event) {
       const scrollPosition = (event.target as HTMLElement).scrollTop
@@ -46,7 +55,7 @@ export default {
   <div>
     <pull-refresh
       class="pull-container"
-      v-model="isLoading"
+      v-model="isRefreshing"
       @refresh="onRefresh"
       pulling-text="Pull down to refresh"
       loading-text="Loading..."
@@ -60,6 +69,7 @@ export default {
         <div class="center-column-flex">
           <span class="title">{{ busStop.Description }} ({{ busStop.BusStopCode }})</span>
           <span class="subtitle">{{ busStop.RoadName }}</span>
+          <circular-progress v-if="isLoading"></circular-progress>
         </div>
         <div v-for="arrival in arrivals" :key="arrival.service_num">
           <bus-arrival-list-item :bus-arrival="arrival"></bus-arrival-list-item>
@@ -76,7 +86,7 @@ export default {
 }
 
 .page-container {
-  padding: 0 2vw;
+  padding: 1vh 2vw;
 }
 
 .title {

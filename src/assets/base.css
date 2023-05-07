@@ -35,7 +35,7 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
-  --color-pastel: #fefae6;
+  --color-pastel: #f6fefd;
 
   --section-gap: 160px;
 }
@@ -100,6 +100,10 @@ body {
 
 .between {
   justify-content: space-between;
+}
+
+.pastel {
+  background-color: var(--color-pastel);
 }
 
 a {

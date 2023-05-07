@@ -17,9 +17,9 @@ export default defineConfig({
         cleanupOutdatedCaches: false,
       },
       manifest: {
-        name: 'SG Bus',
-        short_name: 'SG Bus',
-        description: 'SG Bus Arrival App',
+        name: 'SingBus',
+        short_name: 'SingBus',
+        description: 'Singapore Bus Web App',
         theme_color: '#ffffff',
         icons: [
           {
