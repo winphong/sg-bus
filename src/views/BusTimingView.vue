@@ -9,7 +9,7 @@ export default {
     return { arrivals: [] as IBusArrival[], isLoading: false }
   },
   async mounted() {
-    const data = (await this.$axios.get(`/timing/${this.$route.params.busStopId}`)).data
+    const data = (await this.$axios.get(`/?${this.$route.params.busStopId}`)).data
     this.arrivals = data.Services
   },
   computed: {
@@ -21,7 +21,7 @@ export default {
     async onRefresh() {
       this.isLoading = true
 
-      const data = (await this.$axios.get(`/timing/${this.$route.params.busStopId}`)).data
+      const data = (await this.$axios.get(`/?${this.$route.params.busStopId}`)).data
       this.arrivals = data.Services
 
       this.isLoading = false
