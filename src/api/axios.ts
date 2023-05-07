@@ -10,10 +10,7 @@ export default {
   install: (app: App, options: AxiosOptions) => {
     const axiosInstance = axios.create({
       baseURL: options.baseUrl,
-      headers: {
-        Authorization: options.token ? `Bearer ${options.token}` : ''
-      }
     })
     app.config.globalProperties.$axios = axiosInstance
-  }
+  },
 }
