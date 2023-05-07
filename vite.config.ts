@@ -16,6 +16,24 @@ export default defineConfig({
       workbox: {
         cleanupOutdatedCaches: false,
       },
+      manifest: {
+        name: 'SG Bus',
+        short_name: 'SG Bus',
+        description: 'SG Bus Arrival App',
+        theme_color: '#ffffff',
+        icons: [
+          {
+            src: 'img/icons/bus.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'img/icons/bus.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
     }),
   ],
   resolve: {
