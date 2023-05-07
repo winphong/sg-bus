@@ -14,6 +14,7 @@ const store = createStore<IStore>({
     selectedBusStopCode: '',
     lng: null,
     lat: null,
+    isRetrievingPosition: false,
   },
   mutations: {
     setSelectedBusStop(state, payload: { busStopCode: string | null }) {
@@ -34,8 +35,14 @@ const store = createStore<IStore>({
         }),
       )
     },
+    setIsLoadingPosition(state, isRetrievingPosition: boolean) {
+      state.isRetrievingPosition = isRetrievingPosition
+    },
   },
   getters: {
+    getIsRetrievingPosition(state) {
+      return state.isRetrievingPosition
+    },
     getBusStops() {
       const data = _.keyBy(RawBusStops, 'BusStopCode')
       return data

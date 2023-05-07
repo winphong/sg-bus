@@ -5,4 +5,5 @@ export interface IStore {
   nearbyBusStops: Map<string, IBusStop>
   lat: number | null
   lng: number | null
+  isRetrievingPosition: boolean
 }

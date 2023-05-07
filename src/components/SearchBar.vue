@@ -5,6 +5,10 @@ export default {
       type: String,
       required: true,
     },
+    placeholder: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     emitUpdateSearchString(event: Event) {
@@ -17,7 +21,13 @@ export default {
 </script>
 
 <template>
-  <input class="search-input" type="text" :value="searchString" @input="emitUpdateSearchString" />
+  <input
+    class="search-input"
+    type="text"
+    :placeholder="placeholder"
+    :value="searchString"
+    @input="emitUpdateSearchString"
+  />
 </template>
 
 <style scoped>

@@ -4,11 +4,12 @@ import _ from 'lodash'
 import BusListItem from '@/components/BusListItem.vue'
 import GeoDistanceCalculator from '@/lib/GeoDistanceCalculator'
 import SearchBar from '@/components/SearchBar.vue'
+import CircularProgress from '@/components/CircularProgress.vue'
 
 const MAX_NUM_OF_RESULT = 30
 
 export default {
-  components: { BusListItem, SearchBar },
+  components: { BusListItem, SearchBar, CircularProgress },
   setup() {
     const fuse = new FuseSearch()
     const calculator = new GeoDistanceCalculator()
@@ -48,6 +49,9 @@ export default {
         }),
       }))
     },
+    isLoading() {
+      return this.$store.getters.getIsRetrievingPosition
+    },
   },
 }
 </script>
@@ -57,11 +61,15 @@ export default {
     <search-bar
       class="search-input"
       :search-string="searchString"
+      placeholder="Type to search bus stops..."
       v-on:update:value="updateSearchString"
     >
     </search-bar>
+    <circular-progress v-if="isLoading">
+      <span v-if="isLoading">Updating your location...</span>
+    </circular-progress>
     <div class="overflow-y">
-      <div v-for="busStop in searchResults" :key="busStop.BusStopCode">
+      <div v-for="busStop in searchResults" :key="busStop.BusStopCode" class="bus-li-container">
         <bus-list-item :bus-stop="busStop"></bus-list-item>
       </div>
     </div>
@@ -70,10 +78,15 @@ export default {
 
 <style scoped>
 .search-input {
-  border: 1px solid black;
-  border-radius: 2px;
+  border: 1px solid rgb(128, 128, 128, 0.6);
+  border-radius: 4px;
   width: 100%;
   padding: 2vh;
+  margin-bottom: 1vh;
+}
+
+.bus-li-container {
+  padding: 0 4px;
 }
 
 .search-input:hover {
