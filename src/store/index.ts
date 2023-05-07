@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { createStore } from 'vuex'
-import rbush from 'rbush'
+import rbush, { type BBox } from 'rbush'
 
 import type { IStore } from '@/store/IStore'
 import type { IBusStop } from '@/model'
@@ -84,7 +84,7 @@ const store = createStore<IStore>({
 
       const matchingBusStops = getters.getRbush.search(bbox)
       const calculator = new GeoDistanceCalculator()
-      const matchingBusStopsWDistance = matchingBusStops.map((v) => {
+      const matchingBusStopsWDistance = matchingBusStops.map((v: BBox & { id: string }) => {
         const busStop = getters.getBusStops[v.id]
         return {
           ...busStop,
