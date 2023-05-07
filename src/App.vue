@@ -27,9 +27,18 @@ export default {
   <main>
     <router-view> </router-view>
   </main>
+  <ins class="adsbygoogle"></ins>
 </template>
 
 <style scoped>
+.adsbygoogle {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 75vw;
+  height: 10vh;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
