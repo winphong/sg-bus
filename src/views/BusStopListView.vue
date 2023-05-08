@@ -5,6 +5,7 @@ import BusListItem from '@/components/BusListItem.vue'
 import GeoDistanceCalculator from '@/lib/GeoDistanceCalculator'
 import SearchBar from '@/components/SearchBar.vue'
 import CircularProgress from '@/components/CircularProgress.vue'
+import RawBusStops from '@/data/bus-stops.json'
 
 const MAX_NUM_OF_RESULT = 30
 
@@ -32,6 +33,15 @@ export default {
   computed: {
     searchResults() {
       const position = this.$store.getters.getCurrentPosition
+      const invalidPosition = !position.lat || !position.lng
+
+      // Fallback list if position permission not granted
+      if (invalidPosition && !this.searchString.trim()) {
+        return _.map(RawBusStops.slice(0, MAX_NUM_OF_RESULT), (item) => ({
+          ...item,
+          distance: 0,
+        }))
+      }
 
       if (!this.searchString.trim()) {
         const nearbyBusStops = this.$store.getters.getNearbyBusStops.slice(0, MAX_NUM_OF_RESULT)
@@ -41,12 +51,14 @@ export default {
       const searchResult = this.fuse.search(this.searchString).slice(0, MAX_NUM_OF_RESULT)
       return _.map(searchResult, ({ item }) => ({
         ...item,
-        distance: this.calculator.getDistance({
-          srcLat: position.lat!,
-          srcLng: position.lng!,
-          destLat: item.Latitude,
-          destLng: item.Longitude,
-        }),
+        distance: invalidPosition
+          ? 0
+          : this.calculator.getDistance({
+              srcLat: position.lat!,
+              srcLng: position.lng!,
+              destLat: item.Latitude,
+              destLng: item.Longitude,
+            }),
       }))
     },
     isLoading() {
