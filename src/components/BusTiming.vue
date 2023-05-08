@@ -11,7 +11,7 @@ export default {
     BaseCard,
   },
   props: {
-    arrival: { type: Object as () => IBusNextArrival, required: true },
+    arrival: { type: Object as () => IBusNextArrival | null, required: true },
   },
   computed: {
     arrivalTime() {
