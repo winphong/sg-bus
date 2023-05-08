@@ -121,6 +121,10 @@ export default {
 
 <template>
   <div>
+    <div :class="['center-column-flex', 'title-container']">
+      <span class="title">{{ busStop.Description }} ({{ busStop.BusStopCode }})</span>
+      <span class="subtitle">{{ busStop.RoadName }}</span>
+    </div>
     <pull-refresh
       class="pull-container"
       v-model="isRefreshing"
@@ -135,8 +139,6 @@ export default {
     >
       <div class="page-container">
         <div class="center-column-flex">
-          <span class="title">{{ busStop.Description }} ({{ busStop.BusStopCode }})</span>
-          <span class="subtitle">{{ busStop.RoadName }}</span>
           <circular-progress v-if="isLoading"></circular-progress>
         </div>
         <div v-for="arrival in arrivals" :key="arrival.service_num">
@@ -151,8 +153,12 @@ export default {
 </template>
 
 <style scoped>
+.title-container {
+  margin: 4px 0 8px 0;
+}
+
 .pull-container {
-  height: 80vh;
+  height: 74vh;
   overflow-y: scroll;
 }
 

@@ -64,12 +64,12 @@ export default {
 .timing-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 0.5rem;
+  column-gap: 4px;
 }
 
 .arrival-bus-card {
   margin: 10px 0;
-  padding: 1rem 0.8rem;
+  padding: 0.8rem 0.6rem;
 }
 
 .location {

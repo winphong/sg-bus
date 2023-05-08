@@ -30,7 +30,7 @@ export default {
     >
       <v-list-item :prepend-icon="mdiBusStop" value="idk" title="Bus Stops" link :to="'/'">
       </v-list-item>
-      <v-list-item :prepend-icon="mdiRoad" title="Bus Routes" link :to="'/about'"> </v-list-item>
+      <!-- <v-list-item :prepend-icon="mdiRoad" title="Bus Routes" link :to="'/about'"> </v-list-item> -->
     </v-navigation-drawer>
   </v-layout>
 

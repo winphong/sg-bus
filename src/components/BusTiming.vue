@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mdiWheelchair, mdiBus, mdiBusDoubleDecker } from '@mdi/js'
+import { mdiWheelchair, mdiBus, mdiBusDoubleDecker, mdiBusMultiple } from '@mdi/js'
 </script>
 
 <script lang="ts">
@@ -23,7 +23,11 @@ export default {
         return minutes
       }
     },
-
+    showMinText() {
+      return (duration_ms: number) => {
+        return this.arrivalTime(duration_ms) !== 'Arr'
+      }
+    },
     crowd() {
       return (load: string) => {
         switch (load) {
@@ -42,21 +46,26 @@ export default {
 
 <template>
   <base-card :class="['card-in']" v-if="!!arrival?.time">
-    <div :class="['center-row-flex', 'full-width', 'justify']">
-      <div :class="['center-column-flex']">
+    <div :class="['center-column-flex', 'full-width', 'justify']">
+      <div class="bar" :style="{ 'background-color': crowd(arrival.load) }"></div>
+      <div :class="['center-column-flex', 'full-width', 'timing-box']">
         <span class="arrival-time-text">{{ arrivalTime(arrival.duration_ms) }}</span>
-        <span class="min-text" v-if="arrivalTime(arrival.duration_ms) !== 'Arr'">min</span>
+        <span class="min-text" v-if="showMinText(arrival.duration_ms)">min</span>
       </div>
-      <div :style="{ margin: '4px' }"></div>
-      <div :class="['center-column-flex']">
+      <div :class="['center-row-flex']">
         <v-icon
           color="grey"
           size="20"
           v-if="arrival.type === 'DD'"
           :icon="mdiBusDoubleDecker"
         ></v-icon>
+        <v-icon
+          color="grey"
+          size="20"
+          v-else-if="arrival.type === 'BD'"
+          :icon="mdiBusMultiple"
+        ></v-icon>
         <v-icon color="grey" size="20" v-else :icon="mdiBus"></v-icon>
-        <div class="bar" :style="{ 'background-color': crowd(arrival.load) }"></div>
         <v-icon
           color="grey"
           size="16"
@@ -71,7 +80,7 @@ export default {
 <style scoped>
 .card-in {
   min-width: 50px;
-  padding: 1.2rem 0;
+  padding: 8px;
 }
 
 .arrival-time-text {
@@ -86,9 +95,12 @@ export default {
   line-height: 8px;
 }
 
+.timing-box {
+  height: 34px;
+}
+
 .bar {
-  margin: 4px 0px;
   height: 2px;
-  width: 100%;
+  width: 80%;
 }
 </style>

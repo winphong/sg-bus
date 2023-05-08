@@ -42,8 +42,12 @@ export default {
   position: fixed;
   bottom: 10px;
   left: 10px;
-  width: 75vw;
+  width: 78vw;
   height: 10vh;
+
+  @media (min-width: 1024px) {
+    width: 90vw;
+  }
 }
 
 header {
