@@ -37,9 +37,9 @@ export default {
       </div>
       <div :class="['flex-2', 'text-center']">
         <div class="timing-grid" v-if="!isEmpty">
-          <bus-timing :arrival="busArrival.next"></bus-timing>
-          <bus-timing :arrival="busArrival.next2"></bus-timing>
-          <bus-timing :arrival="busArrival.next3"></bus-timing>
+          <bus-timing v-if="busArrival.next" :arrival="busArrival.next"></bus-timing>
+          <bus-timing v-if="busArrival.next2" :arrival="busArrival.next2"></bus-timing>
+          <bus-timing v-if="busArrival.next3" :arrival="busArrival.next3"></bus-timing>
         </div>
         <span v-if="isEmpty">Bus not in service</span>
       </div>
