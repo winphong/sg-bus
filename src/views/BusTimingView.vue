@@ -1,9 +1,12 @@
 <script lang="ts">
+import _ from 'lodash'
 import PullRefresh from 'pull-refresh-vue3'
 
-import type { IBusArrival } from '@/model'
+import type { IBusArrival, IBusNextArrival, RawBusRoute, RawBusService } from '@/model'
 import BusArrivalListItem from '@/components/BusArrivalListItem.vue'
 import CircularProgress from '@/components/CircularProgress.vue'
+import RawBusRoutesBusStopCode from '@/data/bus-routes-by-bus-stop-code.json'
+import RawBusServices from '@/data/bus-services.json'
 
 export default {
   components: { BusArrivalListItem, PullRefresh, CircularProgress },
@@ -16,10 +19,24 @@ export default {
     }
   },
   async mounted() {
+    this.arrivals = this.staticBusServices
+
     this.isLoading = true
     const data = (await this.$axios.get(`/?id=${this.$route.params.busStopId}`)).data
-    this.arrivals = data.Services
+    const busArrivalData = _.keyBy(data.Services, 'service_num')
 
+    this.arrivals = this.staticBusServices.map((arrival) => {
+      const nextBusArrival = busArrivalData[arrival.service_num]
+      if (!nextBusArrival) {
+        return arrival
+      }
+      return {
+        ...arrival,
+        next: nextBusArrival.next,
+        next2: nextBusArrival.next2,
+        next3: nextBusArrival.next3,
+      }
+    })
     this.isLoading = false
   },
   computed: {
@@ -29,14 +46,62 @@ export default {
     refreshDisabled() {
       return this.scrollPosition > 100
     },
-  },
+    staticBusServices() {
+      return _.orderBy(
+        _.uniqWith(
+          _.compact(
+            (RawBusRoutesBusStopCode as Record<string, RawBusRoute[]>)[
+              this.$route.params.busStopId as string
+            ].map((bus) => {
+              const busService = (RawBusServices as Record<string, RawBusService>)[bus.ServiceNo]
 
+              if (!busService.OriginCode || !busService.DestinationCode) {
+                return null
+              }
+
+              return {
+                service_num: bus.ServiceNo,
+                operator: bus.Operator,
+                next: null,
+                next2: null,
+                next3: null,
+                OriginCode: busService.OriginCode,
+                DestinationCode: busService.DestinationCode,
+              }
+            }),
+          ),
+          (dis, dat) => dis.service_num === dat.service_num && dis.OriginCode === dat.OriginCode,
+        ),
+        (nextArrival) => {
+          const match = nextArrival.service_num.match(/^(\d+)([a-zA-Z]*)$/)
+          if (!match) {
+            return nextArrival
+          }
+          const number = parseInt(match[1])
+          return isNaN(number) ? nextArrival.service_num : number
+        },
+      )
+    },
+  },
   methods: {
     async onRefresh() {
       this.isRefreshing = true
 
       const data = (await this.$axios.get(`/?id=${this.$route.params.busStopId}`)).data
-      this.arrivals = data.Services
+      const busArrivalData = _.keyBy(data.Services, 'service_num')
+
+      this.arrivals = this.staticBusServices.map((arrival) => {
+        const nextBusArrival = busArrivalData[arrival.service_num]
+        if (!nextBusArrival) {
+          return arrival
+        }
+        return {
+          ...arrival,
+          next: nextBusArrival.next,
+          next2: nextBusArrival.next2,
+          next3: nextBusArrival.next3,
+        }
+      })
 
       this.isRefreshing = false
     },
@@ -46,6 +111,9 @@ export default {
         return
       }
       this.scrollPosition = (event.target as HTMLElement).scrollTop
+    },
+    isEmpty(next: IBusNextArrival | null) {
+      return !this.isLoading && !next
     },
   },
 }
@@ -72,7 +140,10 @@ export default {
           <circular-progress v-if="isLoading"></circular-progress>
         </div>
         <div v-for="arrival in arrivals" :key="arrival.service_num">
-          <bus-arrival-list-item :bus-arrival="arrival"></bus-arrival-list-item>
+          <bus-arrival-list-item
+            :bus-arrival="arrival"
+            :is-empty="isEmpty(arrival.next)"
+          ></bus-arrival-list-item>
         </div>
       </div>
     </pull-refresh>

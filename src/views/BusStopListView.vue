@@ -65,9 +65,11 @@ export default {
       v-on:update:value="updateSearchString"
     >
     </search-bar>
-    <circular-progress v-if="isLoading">
-      <span v-if="isLoading">Updating your location...</span>
-    </circular-progress>
+    <div class="center-column-flex">
+      <circular-progress v-if="isLoading">
+        <span v-if="isLoading">Updating your location...</span>
+      </circular-progress>
+    </div>
     <div class="overflow-y">
       <div v-for="busStop in searchResults" :key="busStop.BusStopCode" class="bus-li-container">
         <bus-list-item :bus-stop="busStop"></bus-list-item>

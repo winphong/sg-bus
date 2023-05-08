@@ -1,9 +1,9 @@
 export interface IBusArrival {
   service_num: string
   operator: string
-  next: IBusNextArrival
-  next2: IBusNextArrival
-  next3: IBusNextArrival
+  next: IBusNextArrival | null
+  next2: IBusNextArrival | null
+  next3: IBusNextArrival | null
   OriginCode: string
   DestinationCode: string
 }
