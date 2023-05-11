@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       searchString: '',
+      hasNearbyBusStops: true,
     }
   },
   methods: {
@@ -31,22 +32,28 @@ export default {
     },
   },
   computed: {
+    isLoading() {
+      return this.$store.getters.getIsRetrievingPosition
+    },
+    fallbackBusStops() {
+      return _.map(RawBusStops.slice(0, MAX_NUM_OF_RESULT), (item) => ({
+        ...item,
+        distance: 0,
+      }))
+    },
+
     searchResults() {
-      const position = this.$store.getters.getCurrentPosition
-      const invalidPosition = !position.lat || !position.lng
-
-      // Fallback list if position permission not granted
-      if (invalidPosition && !this.searchString.trim()) {
-        return _.map(RawBusStops.slice(0, MAX_NUM_OF_RESULT), (item) => ({
-          ...item,
-          distance: 0,
-        }))
-      }
-
       if (!this.searchString.trim()) {
         const nearbyBusStops = this.$store.getters.getNearbyBusStops.slice(0, MAX_NUM_OF_RESULT)
+        // No nearby bus stops
+        if (nearbyBusStops.length === 0) {
+          return this.fallbackBusStops
+        }
         return nearbyBusStops
       }
+
+      const position = this.$store.getters.getCurrentPosition
+      const invalidPosition = !position.lat || !position.lng
 
       const searchResult = this.fuse.search(this.searchString).slice(0, MAX_NUM_OF_RESULT)
       return _.map(searchResult, ({ item }) => ({
@@ -61,8 +68,16 @@ export default {
             }),
       }))
     },
-    isLoading() {
-      return this.$store.getters.getIsRetrievingPosition
+    relevantBusStops() {
+      const position = this.$store.getters.getCurrentPosition
+      const invalidPosition = !position.lat || !position.lng
+
+      // Fallback list if position permission not granted
+      if (invalidPosition && !this.searchString.trim()) {
+        return this.fallbackBusStops
+      }
+
+      return this.searchResults
     },
   },
 }
@@ -79,11 +94,11 @@ export default {
     </search-bar>
     <div class="center-column-flex">
       <circular-progress v-if="isLoading">
-        <span v-if="isLoading">Updating your location...</span>
+        <span v-if="isLoading">Retrieving your location to show you nearby bus stops...</span>
       </circular-progress>
     </div>
     <div class="overflow-y">
-      <div v-for="busStop in searchResults" :key="busStop.BusStopCode" class="bus-li-container">
+      <div v-for="busStop in relevantBusStops" :key="busStop.BusStopCode" class="bus-li-container">
         <bus-list-item :bus-stop="busStop"></bus-list-item>
       </div>
     </div>
