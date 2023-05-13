@@ -34,7 +34,6 @@ export default {
   <main>
     <router-view> </router-view>
   </main>
-  <ins class="adsbygoogle"></ins>
 </template>
 
 <style scoped>
