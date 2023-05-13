@@ -34,13 +34,21 @@ export default {
   <main>
     <router-view> </router-view>
   </main>
-  <ins
+  <!-- <ins
     class="adsbygoogle"
     style="display: block"
     data-ad-client="ca-pub-7300987111329283"
     data-ad-slot="2285316516"
     data-ad-format="auto"
     data-full-width-responsive="true"
+  ></ins> -->
+
+  <ins
+    class="adsbygoogle"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-7300987111329283"
+    data-ad-slot="3801524266"
   ></ins>
 </template>
 
@@ -50,7 +58,7 @@ export default {
   bottom: 10px;
   left: 10px;
   width: 78vw;
-  height: 10vh;
+  max-height: 10vh;
 
   @media (min-width: 1024px) {
     width: 90vw;
