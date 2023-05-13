@@ -34,6 +34,14 @@ export default {
   <main>
     <router-view> </router-view>
   </main>
+  <ins
+    class="adsbygoogle"
+    style="display: block"
+    data-ad-client="ca-pub-7300987111329283"
+    data-ad-slot="2285316516"
+    data-ad-format="auto"
+    data-full-width-responsive="true"
+  ></ins>
 </template>
 
 <style scoped>
