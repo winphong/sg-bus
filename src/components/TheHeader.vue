@@ -44,7 +44,7 @@ export default {
   position: fixed;
   z-index: 20;
   width: 100vw;
-  background-color: #f6fefd;
+  background-color: beige;
 }
 
 img {
