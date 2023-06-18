@@ -21,30 +21,32 @@ export default {
 </script>
 
 <template>
-  <base-card class="arrival-bus-card">
-    <div :class="['center-row-flex', 'min-height']">
-      <div class="flex-1">
-        <span>{{ busArrival.service_num }} ({{ busArrival.operator }}) </span>
-        <!-- Refactor to reusable component -->
-        <v-timeline side="end" truncate-line="both" class="ma-0 pa-0" density="compact">
-          <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="green">
-            <span class="location">{{ origin }}</span>
-          </v-timeline-item>
-          <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="red">
-            <span class="location">{{ destination }}</span>
-          </v-timeline-item>
-        </v-timeline>
-      </div>
-      <div :class="['flex-2', 'text-center']">
-        <div class="timing-grid" v-if="!isEmpty">
-          <bus-timing v-if="busArrival.next" :arrival="busArrival.next"></bus-timing>
-          <bus-timing v-if="busArrival.next2" :arrival="busArrival.next2"></bus-timing>
-          <bus-timing v-if="busArrival.next3" :arrival="busArrival.next3"></bus-timing>
+  <router-link :to="{ name: 'route', params: { busId: busArrival.service_num } }">
+    <base-card class="arrival-bus-card">
+      <div :class="['center-row-flex', 'min-height']">
+        <div class="flex-1">
+          <span>{{ busArrival.service_num }} ({{ busArrival.operator }}) </span>
+          <!-- Refactor to reusable component -->
+          <v-timeline side="end" truncate-line="both" class="ma-0 pa-0" density="compact">
+            <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="green">
+              <span class="location">{{ origin }}</span>
+            </v-timeline-item>
+            <v-timeline-item size="x-small" hide-opposite density="compact" dot-color="red">
+              <span class="location">{{ destination }}</span>
+            </v-timeline-item>
+          </v-timeline>
         </div>
-        <span v-if="isEmpty">Bus not in service</span>
+        <div :class="['flex-2', 'text-center']">
+          <div class="timing-grid" v-if="!isEmpty">
+            <bus-timing v-if="busArrival.next" :arrival="busArrival.next"></bus-timing>
+            <bus-timing v-if="busArrival.next2" :arrival="busArrival.next2"></bus-timing>
+            <bus-timing v-if="busArrival.next3" :arrival="busArrival.next3"></bus-timing>
+          </div>
+          <span v-if="isEmpty">Bus not in service</span>
+        </div>
       </div>
-    </div>
-  </base-card>
+    </base-card>
+  </router-link>
 </template>
 
 <style scoped>
