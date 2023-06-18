@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mdiMenu, mdiRoad, mdiBusStop } from '@mdi/js'
+import { mdiMenu, mdiBusStop, mdiRefresh } from '@mdi/js'
 </script>
 
 <script lang="ts">
@@ -9,9 +9,28 @@ export default {
       drawer: false,
     }
   },
+  computed: {
+    showRefresh() {
+      return this.$route.path === '/'
+    },
+  },
   methods: {
     toggleDrawer() {
       this.drawer = !this.drawer
+    },
+    refreshCurrentLocation() {
+      navigator.geolocation.getCurrentPosition(
+        (e) => {
+          const position = { lat: e.coords.latitude, lng: e.coords.longitude }
+          this.$store.commit('setCurrentPosition', { position })
+          this.$store.commit('setIsLoadingPosition', false)
+        },
+        (e) => {
+          this.$store.commit('setIsLoadingPosition', false)
+          console.log('failure', e)
+        },
+        { maximumAge: 10000, enableHighAccuracy: false },
+      )
     },
   },
 }
@@ -33,6 +52,15 @@ export default {
       <!-- <v-list-item :prepend-icon="mdiRoad" title="Bus Routes" link :to="'/about'"> </v-list-item> -->
     </v-navigation-drawer>
   </v-layout>
+
+  <div
+    :style="{ position: 'fixed', zIndex: 200, bottom: '70px', right: '20px' }"
+    v-if="showRefresh"
+  >
+    <v-btn size="big" @click="refreshCurrentLocation" rounded class="button">
+      <v-icon color="red" size="25" :icon="mdiRefresh"></v-icon>
+    </v-btn>
+  </div>
 
   <div :style="{ position: 'fixed', zIndex: 200, bottom: '20px', right: '20px' }">
     <v-btn size="big" @click.stop="drawer = !drawer" rounded class="button">
