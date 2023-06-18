@@ -1,6 +1,6 @@
 <script lang="ts">
 import _ from 'lodash'
-import type { IBusStopDistance } from '@/model'
+import type { IBusStopDistance, RawBusRoute } from '@/model'
 import BaseCard from '@/components/BaseCard.vue'
 import BusRoutes from '@/data/bus-routes-by-bus-service.json'
 
@@ -28,7 +28,9 @@ export default {
   },
   computed: {
     routes() {
-      const busRoutes = BusRoutes[this.$route.params.busId]
+      const busRoutes = (BusRoutes as Record<string, RawBusRoute[]>)[
+        this.$route.params.busId as string
+      ]
       const routes = _.map(_.uniqBy(busRoutes, 'Distance'), (route) => {
         const busStop = this.$store.getters.getBusStops[route.BusStopCode]
 
