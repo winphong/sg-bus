@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mdiMenu, mdiBusStop, mdiRefresh } from '@mdi/js'
+import { mdiMenu, mdiBusStop, mdiCrosshairsGps } from '@mdi/js'
 </script>
 
 <script lang="ts">
@@ -55,7 +55,7 @@ export default {
 
   <div class="sticky">
     <v-btn v-if="showRefresh" size="big" @click="refreshCurrentLocation" rounded class="button">
-      <v-icon color="red" size="25" :icon="mdiRefresh"></v-icon>
+      <v-icon color="red" size="25" :icon="mdiCrosshairsGps"></v-icon>
     </v-btn>
     <div :style="{ margin: '2px' }"></div>
     <v-btn size="big" @click.stop="drawer = !drawer" rounded class="button">
