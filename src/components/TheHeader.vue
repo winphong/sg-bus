@@ -30,8 +30,11 @@ export default {
       size="25"
       class="icon"
     ></v-icon>
-    <img src="/img/icons/bus.png" />
-    <span class="brand">SingBus</span>
+    <div :style="{ flex: 8 }" :class="['center-row-flex', 'justify']">
+      <img src="/img/icons/bus.png" />
+      <span class="brand">SingBus</span>
+    </div>
+    <div :style="{ flex: 1 }" v-if="showBackButton"></div>
   </div>
 </template>
 
@@ -50,10 +53,8 @@ img {
 }
 
 .icon {
-  position: fixed;
-  top: 16px;
-  left: 16px;
   font-weight: 100;
+  flex: 1;
 }
 
 .brand {
