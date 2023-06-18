@@ -31,7 +31,7 @@ export default {
 <template>
   <the-header></the-header>
   <the-navigator> </the-navigator>
-  <main :style="{ paddingTop: '60px', padding: '0 10px' }">
+  <main :style="{ padding: '60px 10px 0' }">
     <router-view> </router-view>
   </main>
   <ins class="adsbygoogle"></ins>
