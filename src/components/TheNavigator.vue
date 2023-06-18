@@ -53,16 +53,11 @@ export default {
     </v-navigation-drawer>
   </v-layout>
 
-  <div
-    :style="{ position: 'fixed', zIndex: 200, bottom: '70px', right: '20px' }"
-    v-if="showRefresh"
-  >
-    <v-btn size="big" @click="refreshCurrentLocation" rounded class="button">
+  <div class="sticky">
+    <v-btn v-if="showRefresh" size="big" @click="refreshCurrentLocation" rounded class="button">
       <v-icon color="red" size="25" :icon="mdiRefresh"></v-icon>
     </v-btn>
-  </div>
-
-  <div :style="{ position: 'fixed', zIndex: 200, bottom: '20px', right: '20px' }">
+    <div :style="{ margin: '2px' }"></div>
     <v-btn size="big" @click.stop="drawer = !drawer" rounded class="button">
       <v-icon color="red" size="25" :icon="mdiMenu"></v-icon>
     </v-btn>
@@ -75,5 +70,14 @@ export default {
   width: 6vh;
   border-radius: 50%;
   background-color: var(--color-pastel);
+}
+
+.sticky {
+  right: 20px;
+  bottom: 20px;
+  z-index: 200;
+  display: flex;
+  position: fixed;
+  flex-direction: column;
 }
 </style>
