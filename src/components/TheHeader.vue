@@ -6,7 +6,7 @@ import { mdiArrowLeft } from '@mdi/js'
 export default {
   computed: {
     showBackButton() {
-      if (this.$route.path.match('/timing')) {
+      if (this.$route.path !== '/') {
         return true
       }
       return false
@@ -38,6 +38,10 @@ export default {
 <style scoped>
 .container {
   height: 8vh;
+  position: fixed;
+  z-index: 20;
+  width: 100vw;
+  background-color: #f6fefd;
 }
 
 img {

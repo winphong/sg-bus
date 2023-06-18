@@ -6,4 +6,5 @@ export type Getters = {
   getSelectedBusStop(state: IStore): (code: string) => IBusStop
   getCurrentPosition(state: IStore): { lat: number; lng: number }
   getIsRetrievingPosition(state: IStore): boolean
+  getBusStops(state: IStore): Record<string, IBusStopDistance>
 }

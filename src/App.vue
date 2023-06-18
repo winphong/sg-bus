@@ -31,7 +31,7 @@ export default {
 <template>
   <the-header></the-header>
   <the-navigator> </the-navigator>
-  <main>
+  <main :style="{ marginTop: '8vh', padding: '0 10px' }">
     <router-view> </router-view>
   </main>
   <ins class="adsbygoogle"></ins>
