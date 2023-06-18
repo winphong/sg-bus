@@ -40,7 +40,7 @@ export default {
 
 <style scoped>
 .container {
-  height: 8vh;
+  height: 60px;
   position: fixed;
   z-index: 20;
   width: 100vw;
